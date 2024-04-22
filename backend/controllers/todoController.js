@@ -1,15 +1,8 @@
-let Todo = require("../models/todoModel");
+const Todo = require("../models/todoModel");
 
-let testTodo = new Todo({
-    title: "practise coding",
-    complete: true,
-});
+const getTodos = async (req, res) => {
+    const allTodos = await Todo.find();
+    return res.status(200).json(allTodos);
+};
 
-testTodo
-    .save()
-    .then((doc) => {
-        console.log("FROM DB: ", doc);
-    })
-    .catch((err) => {
-        console.error(err);
-    });
+exports.getTodos = getTodos;

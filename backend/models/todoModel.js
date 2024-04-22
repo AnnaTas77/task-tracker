@@ -13,6 +13,6 @@ const TodoSchema = new Schema({
     },
 });
 
-const Todo = mongoose.model("Todo", TodoSchema);
+const Todo = mongoose.model("Todo", TodoSchema); //"Todo" - collection name
 
 module.exports = Todo;

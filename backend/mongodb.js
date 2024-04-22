@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const connectdb = () =>
     mongoose
-        .connect("mongodb://127.0.0.1:27017/myapp")
+        .connect("mongodb://127.0.0.1:27017/mytododb")
         .then(() => console.log("Mongo DB connected."))
-        .catch("Mongo DB error: ", console.error);
+        .catch((err) => console.error("MongoDB Error - ", err));
 
 module.exports = connectdb;

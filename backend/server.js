@@ -1,19 +1,25 @@
 const express = require("express");
 const cors = require("cors");
 const connectdb = require("./mongodb");
+const { getTodos, createTodo, deleteTodo, toggleTodoStatus } = require("./controllers/todoController");
 
 const app = express();
-connectdb();
 
-const port = 3000;
+const port = 5000;
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
-    res.send("Hello world!");
-});
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}.`);
-});
+
+const start = async () => {
+    try {
+        await connectdb();
+        app.listen(port, () => console.log(`Server is running on port ${port}.`));
+    } catch (error) {
+        console.error(error);
+        // process.exit(1);
+    }
+};
+
+start();
