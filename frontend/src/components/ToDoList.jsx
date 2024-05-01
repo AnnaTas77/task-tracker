@@ -1,20 +1,17 @@
-import InputField from "./InputField";
-import { useState } from "react";
+import axios from "axios";
 
-function ToDoList() {
-    const [todos, setTodos] = useState([]);
+function ToDoList({ allTodos }) {
     return (
-        <div>
-            <h1>My To-Do List</h1>
-            <InputField />
-            {todos.length ? (
-                todos.map((todo) => {
-                    <div>{todo}</div>;
+        <>
+            {allTodos ? (
+                allTodos.map((todo) => {
+                    // console.log("TODO", todo.title);
+                    return <div key={todo._id}>{todo.title}</div>;
                 })
             ) : (
-                <div>The to-do list is empty.</div>
+                <p>The to-do list is empty.</p>
             )}
-        </div>
+        </>
     );
 }
 

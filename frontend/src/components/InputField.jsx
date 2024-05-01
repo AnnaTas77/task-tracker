@@ -1,10 +1,11 @@
 import React from "react";
 
-function InputField() {
+function InputField({ singleTodo, setSingleTodo, handleAddTodo }) {
+
     return (
         <div>
-            <input type="text" />
-            <button>Add</button>
+            <input type="text" value={singleTodo} onChange={(e) => setSingleTodo(e.target.value)} />
+            <button onClick={handleAddTodo}>Add</button>
         </div>
     );
 }
