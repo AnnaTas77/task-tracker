@@ -9,15 +9,12 @@ function App() {
     const [singleTodo, setSingleTodo] = useState("");
     const [dbUpdated, setDbUpdated] = useState(false);
 
-    // console.log("singleTodo: ", singleTodo);
-    const BASE_URL = "http://localhost:3000/";
+    const BASE_URL = "http://localhost:3000";
 
     const getAllTodos = () => {
         axios
-            .get(`${BASE_URL}`)
+            .get(`${BASE_URL}/`)
             .then((res) => {
-                // console.log("HERE", res.data);
-
                 setAllTodos(res.data);
             })
             .catch((err) => console.error(err));
@@ -25,7 +22,7 @@ function App() {
 
     const handleAddTodo = () => {
         axios
-            .post(`${BASE_URL}`, {
+            .post(`${BASE_URL}/`, {
                 title: singleTodo,
             })
             .then((res) => {
@@ -38,17 +35,24 @@ function App() {
             });
     };
 
+    const toggleTodoStatus = (todo) => {
+        axios
+            .patch(`${BASE_URL}/${todo._id}`, { completed: todo.completed })
+            .then((res) => getAllTodos())
+            .catch((err) => console.error(err));
+    };
+
     useEffect(() => {
         getAllTodos();
         setDbUpdated(false);
     }, [dbUpdated]);
 
     return (
-        <div>
+        <section>
             <h1>My To-Do List</h1>
             <InputField handleAddTodo={handleAddTodo} singleTodo={singleTodo} setSingleTodo={setSingleTodo} />
-            <ToDoList allTodos={allTodos} />
-        </div>
+            <ToDoList allTodos={allTodos} toggleTodoStatus={toggleTodoStatus} />
+        </section>
     );
 }
 

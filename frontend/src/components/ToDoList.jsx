@@ -1,12 +1,23 @@
-import axios from "axios";
-
-function ToDoList({ allTodos }) {
+function ToDoList({ allTodos, toggleTodoStatus }) {
     return (
         <>
             {allTodos ? (
                 allTodos.map((todo) => {
-                    // console.log("TODO", todo.title);
-                    return <div key={todo._id}>{todo.title}</div>;
+                    return (
+                        <div key={todo._id}>
+                            <input
+                                type="checkbox"
+                                id="checkbox"
+                                checked={todo.completed}
+                                onChange={() => {
+                                    toggleTodoStatus(todo);
+                                }}
+                            />
+                            <label htmlFor="checkbox" className="todo-title">
+                                {todo.title}
+                            </label>
+                        </div>
+                    );
                 })
             ) : (
                 <p>The to-do list is empty.</p>
