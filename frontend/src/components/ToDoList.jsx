@@ -1,4 +1,4 @@
-function ToDoList({ allTodos, toggleTodoStatus }) {
+function ToDoList({ allTodos, toggleTodoStatus, handleDelete }) {
     return (
         <>
             {allTodos ? (
@@ -16,6 +16,13 @@ function ToDoList({ allTodos, toggleTodoStatus }) {
                             <label htmlFor="checkbox" className="todo-title">
                                 {todo.title}
                             </label>
+                            <button
+                                onClick={() => {
+                                    handleDelete(todo);
+                                }}
+                            >
+                                Delete
+                            </button>
                         </div>
                     );
                 })

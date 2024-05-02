@@ -42,6 +42,13 @@ function App() {
             .catch((err) => console.error(err));
     };
 
+    const handleDelete = (todo) => {
+        axios
+            .delete(`${BASE_URL}/${todo._id}`)
+            .then((res) => getAllTodos())
+            .catch((err) => console.error(err));
+    };
+
     useEffect(() => {
         getAllTodos();
         setDbUpdated(false);
@@ -51,7 +58,7 @@ function App() {
         <section>
             <h1>My To-Do List</h1>
             <InputField handleAddTodo={handleAddTodo} singleTodo={singleTodo} setSingleTodo={setSingleTodo} />
-            <ToDoList allTodos={allTodos} toggleTodoStatus={toggleTodoStatus} />
+            <ToDoList allTodos={allTodos} toggleTodoStatus={toggleTodoStatus} handleDelete={handleDelete} />
         </section>
     );
 }
