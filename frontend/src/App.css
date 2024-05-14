@@ -32,3 +32,9 @@ section {
 input[type="checkbox"]:checked + label.todo-title {
     text-decoration: line-through;
 }
+button {
+    background-color: var(--primary-color);
+    padding: 10px;
+    box-shadow: -2px -2px 10px var(--b-s-top-color), 2px 2px 3px var(--b-s-bottom-color);
+    border-radius: 8px;
+}

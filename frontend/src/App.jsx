@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ToDoList from "./components/ToDoList";
 import InputField from "./components/InputField";
+import store from "./redux/store";
 
 function App() {
-    const [allTodos, setAllTodos] = useState(null);
+    // const [allTodos, setAllTodos] = useState(null);
     const [singleTodo, setSingleTodo] = useState("");
-    const [dbUpdated, setDbUpdated] = useState(false);
+    // const [dbUpdated, setDbUpdated] = useState(false);
 
     const BASE_URL = "http://localhost:3000";
 
@@ -15,7 +16,7 @@ function App() {
         axios
             .get(`${BASE_URL}/`)
             .then((res) => {
-                setAllTodos(res.data);
+                store.dispatch({ type: "INIT_TODOS", payload: res.data });
             })
             .catch((err) => console.error(err));
     };
@@ -25,40 +26,54 @@ function App() {
             .post(`${BASE_URL}/`, {
                 title: singleTodo,
             })
-            .then((res) => {
-                setAllTodos([res.data.title, ...allTodos]);
-                setSingleTodo("");
-                setDbUpdated(true);
-            })
+            // .then((res) => {
+            //     setAllTodos([res.data.title, ...allTodos]);
+            //     setSingleTodo("");
+            //     setDbUpdated(true);
+            // })
             .catch((err) => {
                 console.error(err);
             });
+
+            store.dispatch(addTodo(singleTodo));
     };
+
+    function addTodo(todo) {
+        return {type: "ADD_TODO", payload: todo};
+    }
 
     const toggleTodoStatus = (todo) => {
         axios
             .patch(`${BASE_URL}/${todo._id}`, { completed: todo.completed })
-            .then((res) => getAllTodos())
+            // .then((res) => getAllTodos())
             .catch((err) => console.error(err));
+
+            // store.dispatch({type: "TOGGLE_TODO"})
     };
 
     const handleDelete = (todo) => {
         axios
             .delete(`${BASE_URL}/${todo._id}`)
-            .then((res) => getAllTodos())
+            // .then((res) => {
+                
+                
+            // })
             .catch((err) => console.error(err));
+
+            // store.dispatch({type: "DELETE_TODO"})
     };
 
     useEffect(() => {
         getAllTodos();
-        setDbUpdated(false);
-    }, [dbUpdated]);
+
+        console.log("Initial state: ", store.getState()); 
+    }, []);
 
     return (
         <section>
             <h1>My To-Do List</h1>
             <InputField handleAddTodo={handleAddTodo} singleTodo={singleTodo} setSingleTodo={setSingleTodo} />
-            <ToDoList allTodos={allTodos} toggleTodoStatus={toggleTodoStatus} handleDelete={handleDelete} />
+            <ToDoList toggleTodoStatus={toggleTodoStatus} handleDelete={handleDelete} />
         </section>
     );
 }
