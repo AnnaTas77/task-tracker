@@ -1,7 +1,4 @@
-import React from "react";
-
 function InputField({ singleTodo, setSingleTodo, handleAddTodo }) {
-
     return (
         <div>
             <input type="text" value={singleTodo} onChange={(e) => setSingleTodo(e.target.value)} />

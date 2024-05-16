@@ -1,8 +1,15 @@
-function ToDoList({ allTodos, toggleTodoStatus, handleDelete }) {
+import { useSelector } from "react-redux";
+
+function ToDoList({ toggleTodoStatus, handleDelete }) {
+    const todos = useSelector((state) => state.todos.todos);
+
+    // console.log("TODOS in ToDoList: ", todos[0]);
+
     return (
         <>
-            {allTodos ? (
-                allTodos.map((todo) => {
+            {todos[0] ? (
+                todos[0].map((todo) => {
+                    // console.log("SINGLE TODO: ", todo);
                     return (
                         <div key={todo._id}>
                             <input

@@ -1,7 +1,6 @@
 const Todo = require("../models/todoModel");
 
 const getTodos = async (req, res) => {
-    console.log("test");
     const allTodos = await Todo.find();
     return res.status(200).json(allTodos);
 };

@@ -3,20 +3,22 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ToDoList from "./components/ToDoList";
 import InputField from "./components/InputField";
-import store from "./redux/store";
+// import store from "./redux/store";
+import { useDispatch } from "react-redux";
 
 function App() {
-    // const [allTodos, setAllTodos] = useState(null);
     const [singleTodo, setSingleTodo] = useState("");
     // const [dbUpdated, setDbUpdated] = useState(false);
 
     const BASE_URL = "http://localhost:3000";
 
+    const dispatch = useDispatch();
+
     const getAllTodos = () => {
         axios
             .get(`${BASE_URL}/`)
             .then((res) => {
-                store.dispatch({ type: "INIT_TODOS", payload: res.data });
+                dispatch({ type: "INIT_TODOS", payload: res.data });
             })
             .catch((err) => console.error(err));
     };
@@ -26,47 +28,41 @@ function App() {
             .post(`${BASE_URL}/`, {
                 title: singleTodo,
             })
-            // .then((res) => {
-            //     setAllTodos([res.data.title, ...allTodos]);
-            //     setSingleTodo("");
-            //     setDbUpdated(true);
-            // })
+
             .catch((err) => {
                 console.error(err);
             });
 
-            store.dispatch(addTodo(singleTodo));
+        dispatch(addTodo(singleTodo));
     };
 
     function addTodo(todo) {
-        return {type: "ADD_TODO", payload: todo};
+        // console.log("Redux add todo", todo);
+        return { type: "ADD_TODO", payload: todo };
     }
 
     const toggleTodoStatus = (todo) => {
-        axios
-            .patch(`${BASE_URL}/${todo._id}`, { completed: todo.completed })
-            // .then((res) => getAllTodos())
-            .catch((err) => console.error(err));
+        axios.patch(`${BASE_URL}/${todo._id}`, { completed: todo.completed }).catch((err) => console.error(err));
 
-            // store.dispatch({type: "TOGGLE_TODO"})
+        //dispatch({type: "TOGGLE_TODO"})
     };
+
+    // function toggleTodo(todo) {
+    //     return { type: "TOGGLE_TODO", payload: todo };
+    // }
 
     const handleDelete = (todo) => {
-        axios
-            .delete(`${BASE_URL}/${todo._id}`)
-            // .then((res) => {
-                
-                
-            // })
-            .catch((err) => console.error(err));
+        axios.delete(`${BASE_URL}/${todo._id}`).catch((err) => console.error(err));
 
-            // store.dispatch({type: "DELETE_TODO"})
+        dispatch(deleteTodo(singleTodo));
     };
+
+    function deleteTodo(todo) {
+        return { type: "DELETE_TODO", payload: todo };
+    }
 
     useEffect(() => {
         getAllTodos();
-
-        console.log("Initial state: ", store.getState()); 
     }, []);
 
     return (
